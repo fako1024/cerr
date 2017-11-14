@@ -21,8 +21,8 @@ type Error struct {
 }
 
 // CPtr returns a C char pointer to be handed over to functions in the C domain
-func (e *Error) CPtr() *C.char {
-	return (*C.char)(unsafe.Pointer(&e.buffer[0]))
+func (e *Error) CPtr() unsafe.Pointer {
+	return unsafe.Pointer(&e.buffer[0])
 }
 
 // IsError returns if an error was encountered or not (determined by the length
@@ -32,6 +32,6 @@ func (e *Error) IsError() bool {
 }
 
 // Error returns a Go string version of the NULL-terminated string inside the buffer
-func (e *Error) Error() string {
+func (e Error) Error() string {
 	return strings.TrimRight(string(e.buffer[:]), "\x00")
 }
